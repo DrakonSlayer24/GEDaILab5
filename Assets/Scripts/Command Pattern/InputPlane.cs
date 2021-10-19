@@ -7,6 +7,7 @@ public class InputPlane : MonoBehaviour
     Camera maincam;
     RaycastHit hitInfo;
     public Transform cubePrefab;
+    public Transform capsulePrefab;
 
     // Start is called before the first frame update
     void Awake()
@@ -29,6 +30,19 @@ public class InputPlane : MonoBehaviour
                 CommandInvoker.AddCopmmand(command);
             }
         }
-        
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = maincam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity))
+            {
+                Color c = new Color(Random.Range(0.5f, 1f), Random.Range(0.5f, 1f), Random.Range(0.5f, 1f));
+                //CubePlacer.PlaceCube(hitInfo.point, c, cubePrefab);
+
+                ICommand command = new PlaceCubeCommand(hitInfo.point, c, capsulePrefab);
+                CommandInvoker.AddCopmmand(command);
+            }
+        }
+
     }
 }
